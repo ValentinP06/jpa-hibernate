@@ -67,11 +67,31 @@ public class AppTest {
 
          customers = CustomerDAO.findAll();
         assertEquals(0, customers.size());
-
-
-
     }
 
+    @Test
+    public void deleteCustomerById(){
+
+        Customer customer1= new Customer("customer1");
+        CustomerDAO.create(customer1);
+        Customer customer2= new Customer("customer2");
+        CustomerDAO.create(customer2);
+        Customer customer3= new Customer("customer3");
+        CustomerDAO.create(customer3);
+
+
+        CustomerDAO.deleteCustomerById(customer1.getId());
+    }
+
+    @Test
+    public void updateCustomer(){
+
+        Customer customer1= new Customer("customer1");
+        CustomerDAO.create(customer1);
+
+
+        CustomerDAO.updateCustomer(customer1.getId());
+    }
 
 }
 
