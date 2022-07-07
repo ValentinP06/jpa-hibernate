@@ -50,10 +50,32 @@ public class CustomerDAO {
         delete(customerToDelete);
     }
 
-    public static void updateCustomer(long id){
+    public static void update(long id, Customer newCustomerData) {
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
 
-        Customer customerToDelete = findById(id);
-        delete(customerToDelete);
+        Customer customerToUpdate = entityManager.find(Customer.class, id);
+        customerToUpdate.setNotNullData(newCustomerData);
+
+
+        EntityTransaction tx = null;
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+            entityManager.merge(customerToUpdate);
+            tx.commit();
+        } catch (Exception e){
+         tx.rollback();
+        }
+    }
+
+    public static List<Customer> findByFirstName(String firstName) {
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+
+
+        Query queryToFindCustomerByFirstName = entityManager.createQuery("select c from Customer c where c.firstName = :firstName");
+        queryToFindCustomerByFirstName.setParameter("firstName",firstName);
+        return queryToFindCustomerByFirstName.getResultList();
+
     }
 }
 
